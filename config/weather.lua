@@ -1,5 +1,4 @@
 return {
-
     useScheduledWeather = true, -- Do you want txAdmin to schedule custom rain and thunder near restart?
     serverDuration = 14, -- How many hours will the server run before restarting?, if a server restarts every 8 hours put this to 9 etc.
     weatherCycletimer = 30, -- How many minutes between weather changes
@@ -7,7 +6,7 @@ return {
     timeBetweenRain = 180, -- How many minutes between rain events
     rainAfterRestart = 60, -- How many minutes AFTER a server restart before rain will start to show?
 
-    decemberSnow = true, -- if turned on means that only snow will happen in december
+    decemberSnow = false, -- if turned on means that only snow will happen in december
 
     useStaticWeather = true,
     staticWeather = {
@@ -129,43 +128,43 @@ return {
                     weather = 'SNOW',
                     time = math.random(5, 10), -- Minutes
                     windSpeed = 1.0,
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'BLIZZARD',
                     time = 14, -- Minutes
                     windSpeed = 3.0,
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'SNOW',
                     time = 15, -- Minutes
                     windSpeed = 2.0,
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'SNOWLIGHT',
                     time = 20, -- Minutes
                     windSpeed = 1.0,
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'OVERCAST',
                     windSpeed = 0.5,
                     time = 15, -- Minutes
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'CLOUDS',
                     windSpeed = 0.5,
                     time = 15, -- Minutes
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'CLEAR',
                     windSpeed = 0.5,
                     time = 15, -- Minutes
-                    hasSnow = true,
+                    HasSnow = true,
                 },
                 {
                     weather = 'EXTRASUNNY',

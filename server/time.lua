@@ -68,18 +68,18 @@ end)
 
 if not useRealTime then
     lib.addCommand('time', {
-        help = 'Set the current time',
+        help = 'Defina o horário atual',
         restricted = 'group.admin',
         params = {
             {
                 name = 'hour',
                 type = 'number',
-                help = 'set the Hour',
+                help = 'Defina a hora',
             },
             {
                 name = 'minute',
                 type = 'number',
-                help = 'set the Minute',
+                help = 'Defina o minuto',
                 optional = true
             },
         },
@@ -93,7 +93,7 @@ if not useRealTime then
     end)
 
     lib.addCommand('noon', {
-        help = 'Set the current time to noon (12:00)',
+        help = 'Defina o horário atual ao meio-dia (12:00)',
         restricted = 'group.admin',
     }, function(_, _)
         globalState.currentTime = {
@@ -103,7 +103,7 @@ if not useRealTime then
     end)
 
     lib.addCommand('morning', {
-        help = 'Set the current time to morning (9:00)',
+        help = 'Defina o horário atual para manhã (9:00)',
         restricted = 'group.admin',
     }, function(_, _)
         globalState.currentTime = {
@@ -113,7 +113,7 @@ if not useRealTime then
     end)
     
     lib.addCommand('evening', {
-        help = 'Set the current time to evening (18:00)',
+        help = 'Defina a hora atual para a noite (18:00)',
         restricted = 'group.admin',
     }, function(_, _)
         globalState.currentTime = {
@@ -123,7 +123,7 @@ if not useRealTime then
     end)
     
     lib.addCommand('night', {
-        help = 'Set the current time to night (23:00)',
+        help = 'Defina a hora atual para a noite (23:00)',
         restricted = 'group.admin',
     }, function(_, _)
         globalState.currentTime = {
@@ -133,13 +133,13 @@ if not useRealTime then
     end)
 
     lib.addCommand('timescale', {
-        help = ('Set milliseconds per game second (default %s)'):format(currentScale),
+        help = ('Defina milissegundos por jogo em segundos'):format(currentScale),
         restricted = 'group.admin',
         params = {
             {
                 name = 'scale',
                 type = 'number',
-                help = 'Milliseconds per game second',
+                help = 'Milissegundos por jogo em segundos',
             },
         },
     }, function(_, args) -- source, args
@@ -149,13 +149,13 @@ if not useRealTime then
     end)
 
     lib.addCommand('freezetime', {
-        help = 'Freeze / unfreeze time',
+        help = 'Congelar / descongelar o tempo',
         restricted = 'group.admin',
         params = {
             {
                 name = 'time',
                 type = 'number',
-                help = 'Freeze time? (1 = yes, 0 = no)',
+                help = 'Tempo de congelamento?(1 = sim, 0 = não)',
             },
         },
     }, function(_, args)

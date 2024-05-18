@@ -1,90 +1,92 @@
 -- Weather Admin Management --
 local weatherTypes = {
     {
-        label = 'Blizzard',
+        label = 'Tempestade de neve',
         value = 'BLIZZARD'
     },
     {
-        label = 'Clear',
+        label = 'Limpo',
         value = 'CLEAR'
     },
     {
-        label = 'Clearing',
+        label = 'Clareando',
         value = 'CLEARING'
     },
     {
-        label = 'Clouds',
+        label = 'Nuvens',
         value = 'CLOUDS'
     },
     {
-        label = 'Extra Sunny',
+        label = 'Extra Ensolarado',
         value = 'EXTRASUNNY'
     },
     {
-        label = 'Foggy',
+        label = 'Nevoeiro',
         value = 'FOGGY'
     },
     {
-        label = 'Neutral',
+        label = 'Neutro',
         value = 'NEUTRAL'
     },
     {
-        label = 'Overcast',
+        label = 'Nublado',
         value = 'OVERCAST'
     },
     {
-        label = 'Rain',
+        label = 'Chuva',
         value = 'RAIN'
     },
     {
-        label = 'Smog',
+        label = 'Nevoeiro denso',
         value = 'SMOG'
     },
     {
-        label = 'Snow',
+        label = 'Neve',
         value = 'SNOW'
     },
     {
-        label = 'Snowlight',
+        label = 'Neve leve',
         value = 'SNOWLIGHT'
     },
     {
-        label = 'Thunder',
+        label = 'Trovoada',
         value = 'THUNDER'
     },
     {
-        label = 'Xmas',
+        label = 'Natal',
         value = 'XMAS'
     },
 }
 
 local function viewWeatherEvent(index, weatherEvent, isQueued)
+    local color = GlobalState.UIColors
+
     local metadata = isQueued and {
-        ('Weather %s'):format(weatherEvent.weather),
-        ('Lasting for %s minutes'):format(weatherEvent.time)
+        ('Clima %s'):format(weatherEvent.weather),
+        ('Durando por %s minutos'):format(weatherEvent.time)
     } or {
-        ('Weather %s'):format(weatherEvent.weather),
-        ('%s Minutes Remaining'):format(weatherEvent.time)
+        ('Clima %s'):format(weatherEvent.weather),
+        ('%s Minutos restantes'):format(weatherEvent.time)
     }
     lib.registerContext({
         id = 'Renewed-Weathersync:client:changeWeather',
-        title = 'Change Weather',
+        title = 'Gerenciar Clima',
         menu = 'Renewed-Weathersync:client:manageWeather',
         options = {
             {
-                title = 'Info',
+                title = 'Informações',
                 icon = 'fa-solid fa-circle-info',
                 readOnly = true,
                 metadata = metadata
             },
             {
-                title = 'Change Weather',
+                title = 'Mudar clima',
                 icon = 'fa-solid fa-cloud',
                 arrow = true,
                 onSelect = function()
-                    local input = lib.inputDialog('Change Weather Type', {
+                    local input = lib.inputDialog('Alterar o tipo de clima', {
                         {
-                            label = 'Select Weather',
+                            label = 'Selecione o clima',
                             type = 'select',
                             required = true,
                             default = weatherEvent.weather,
@@ -104,13 +106,13 @@ local function viewWeatherEvent(index, weatherEvent, isQueued)
                 end
             },
             {
-                title = 'Change Duration',
+                title = 'Mudar duração',
                 arrow = true,
                 icon = 'fa-solid fa-hourglass-half',
                 onSelect = function()
-                    local input = lib.inputDialog('Change Duration', {
+                    local input = lib.inputDialog('Mudança de duração', {
                         {
-                            label = 'Duration in minutes',
+                            label = 'Duração em minutos',
                             type = 'slider',
                             required = true,
                             min = 1,
@@ -131,9 +133,10 @@ local function viewWeatherEvent(index, weatherEvent, isQueued)
                 end
             },
             {
-                title = 'Remove Weather Event',
+                title = 'Remova o evento climático',
                 arrow = true,
                 icon = 'fa-solid fa-circle-xmark',
+                iconColor = color.danger,
                 onSelect = function()
                     TriggerServerEvent('Renewed-Weather:server:removeWeatherEvent', index)
                 end
@@ -145,6 +148,8 @@ local function viewWeatherEvent(index, weatherEvent, isQueued)
 end
 
 RegisterNetEvent('Renewed-Weather:client:viewWeatherInfo', function(weatherTable)
+    local color = GlobalState.UIColors
+
     local options = {}
     local amt = 0
 
@@ -157,15 +162,24 @@ RegisterNetEvent('Renewed-Weather:client:viewWeatherInfo', function(weatherTable
         local isQueued = i > 1
 
         local meatadata = isQueued and {
-            ('Starting in %s minutes'):format(startingIn),
-            ('Lasting for %s minutes'):format(currentWeather.time)
+            ('Começando em %s minutos'):format(startingIn),
+            ('Durando por %s minutos'):format(currentWeather.time)
         } or {
-            ('%s Minutes Remaining'):format(currentWeather.time)
+            ('%s Minutos restantes'):format(currentWeather.time)
         }
+        local weatherLabel
+        for i = 1, #weatherTypes do
+            if currentWeather.weather == weatherTypes[i].value then
+                weatherLabel = weatherTypes[i].label
+                break
+            end
+        end
+
+
 
         options[amt] = {
-            title = isQueued and ('Upcomming Weather: %s'):format(currentWeather.weather) or ('Current Weather: %s'):format(currentWeather.weather),
-            description = isQueued and ('Starting in %s minutes'):format(startingIn),
+            title = isQueued and ('Próximo clima: %s'):format(weatherLabel) or ('Clima atual: %s'):format(weatherLabel),
+            description = isQueued and ('Começando em %s minutos'):format(startingIn),
             arrow = true,
             icon = isQueued and 'fa-solid fa-cloud-arrow-up' or 'fa-solid fa-cloud',
             metadata = meatadata,
@@ -180,7 +194,9 @@ RegisterNetEvent('Renewed-Weather:client:viewWeatherInfo', function(weatherTable
 
     lib.registerContext({
         id = 'Renewed-Weathersync:client:manageWeather',
-        title = 'Weather Management',
+        title = 'Gerenciamento',
+        description = 'do Clima',
+        menu = 'menu_admin',
         options = options
     })
 
