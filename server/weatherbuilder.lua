@@ -1,4 +1,8 @@
-local Config = require 'config.weather'
+local Config = lib.load('config.weather')
+
+-- Holy shit I had cancer when I wrote this dogshit not even gonna try and save this spaghetti mess rn
+
+local weather_class = require 'classes.weather'
 
 local currentMonth = tonumber(os.date('%m'))
 
@@ -29,7 +33,8 @@ end
 local function insertEvents(events, weatherList)
     local timeUsed = 0
     for j = 1, #events do
-        local weather = events[j]
+        ---@diagnostic disable-next-line: invisible
+        local weather = weather_class:new(events[j])
 
         weatherList[#weatherList+1] = weather
         timeUsed += weather.time
@@ -68,7 +73,7 @@ local function isWeatherEventAllowed(chance, hasRain, minutesSinceRain, timeBefo
         for i = weatherAmount - 5, weatherAmount do
             if weatherList[i].weather == weather then
                 count += 1
-
+                
                 if count > 1 then
                     return false
                 end
@@ -134,7 +139,8 @@ return function()
                 local hasRain = rainFilter[weather]
                 if isWeatherEventAllowed(chance, hasRain, minutesSinceRain, timeBeforeRain, weather, weatherList, weatherCount) then
                     weatherCount += 1
-                    weatherList[weatherCount] = getWeatherEvent(weather)
+                    ---@diagnostic disable-next-line: invisible
+                    weatherList[weatherCount] = weather_class:new(getWeatherEvent(weather))
                     minutesSinceRain = hasRain and 0 or minutesSinceRain + cycleTimer
                     timeBeforeRain = not hasRain and timeBeforeRain - cycleTimer or timeBeforeRain
                     minutesLeft -= cycleTimer

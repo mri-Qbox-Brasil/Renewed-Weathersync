@@ -1,4 +1,4 @@
-local Config = require 'config.time'
+local Config = lib.load('config.time')
 
 local globalState = GlobalState
 
@@ -16,7 +16,7 @@ local hour = startTime.hour
 -- Syncs the GlobalStates (does not replicate if the values are the same)
 globalState.timeScale = currentScale
 globalState.freezeTime = freezeTime
-
+globalState.isNight = hour >= Config.nightTime.beginning or hour < Config.nightTime.ending
 
 -- Loop that syncs the minute and hours of the servers to clients.
 CreateThread(function()
@@ -35,14 +35,13 @@ end)
 
 -- Add server side statebag change handlers so third party resources can set globalstates and we can replicate the data.
 AddStateBagChangeHandler('freezeTime', 'global', function(_, _, value)
-    if value and next(value) then
-        freezeTime = value
-    end
+    freezeTime = value
 end)
 
 
 local nightScale = Config.timeScaleNight
 local nightStart, nightEnd = Config.nightTime.beginning, Config.nightTime.ending
+
 AddStateBagChangeHandler('currentTime', 'global', function(_, _, value)
     if value then
         hour = value.hour
@@ -58,6 +57,9 @@ AddStateBagChangeHandler('currentTime', 'global', function(_, _, value)
             end
         end
     end
+
+    globalState.isNight = hour >= Config.nightTime.beginning or hour < Config.nightTime.ending
+
 end)
 
 AddStateBagChangeHandler('timeScale', 'global', function(_, _, value)
